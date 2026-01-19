@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #f2b90d;
+  --color-background-dark: #221e10;
+  --font-display: "Newsreader", serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* Offset for our sticky header */
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevents horizontal jank */
+    background-color: #221e10;
+  }
+
+  #root {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+}
