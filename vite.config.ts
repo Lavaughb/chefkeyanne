@@ -4,8 +4,6 @@ import tailwindcss from '@tailwindcss/vite' // Add this import
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    tailwindcss(), // Drop the plugin here
-  ],
+  plugins: [react(), tailwindcss()],
+  base: '/chefkeyanne/', // Must match your repo name exactly
 })
