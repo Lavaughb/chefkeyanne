@@ -7,7 +7,6 @@ const heroImages = [
 ];
 
 const Home: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Memoized navigation functions to prevent unnecessary re-renders
@@ -26,7 +25,6 @@ const Home: React.FC = () => {
   }, [nextSlide]);
 
   const scrollToSection = (id: string) => {
-    setIsMenuOpen(false);
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
