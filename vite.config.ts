@@ -9,7 +9,6 @@ export default defineConfig({
     tailwindcss(),
     ViteImageOptimizer({
       jpeg: { quality: 75 }, // Balance between size and "Chef quality"
-      webp: { lossy: true, quality: 75 },
       avif: { quality: 65 }, // AVIF is super efficient at lower quality scores
     })
   ],
