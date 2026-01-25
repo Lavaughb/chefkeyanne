@@ -1,9 +1,17 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite' // Add this import
+import tailwindcss from '@tailwindcss/vite'
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
-  base: '/chefkeyanne/', // Must match your repo name exactly
+  plugins: [
+    react(), 
+    tailwindcss(),
+    ViteImageOptimizer({
+      jpeg: { quality: 75 }, // Balance between size and "Chef quality"
+      webp: { lossy: true, quality: 75 },
+      avif: { quality: 65 }, // AVIF is super efficient at lower quality scores
+    })
+  ],
+  base: '/chefkeyanne/',
 })

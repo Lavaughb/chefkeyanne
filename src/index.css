@@ -4,6 +4,9 @@
   --color-primary: #f2b90d;
   --color-background-dark: #221e10;
   --font-display: "Newsreader", serif;
+  
+  /* Adding the animation to the Tailwind theme registry */
+  --animate-marquee: marquee 50s linear infinite;
 }
 
 @layer base {
@@ -24,4 +27,23 @@
     margin: 0;
     padding: 0;
   }
+}
+
+/* CUSTOM ANIMATION LOGIC 
+   This handles the smooth, infinite translation of the image row.
+*/
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Optional: Pause the marquee when the user hovers 
+   Add 'hover:pause-marquee' to your div if you want this effect 
+*/
+.hover\:pause-marquee:hover {
+  animation-play-state: paused;
 }
