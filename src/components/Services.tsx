@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const serviceList = [
   {
     id: '01',
-    title: 'Private Dining',
+    title: 'By The Tray Dining',
     subtitle: 'The Signature Experience',
     desc: 'Intimate, multi-course gastronomic journeys crafted within your private sanctuary. Chef Keyanne merges ancestral Caribbean wisdom with contemporary French technique to curate a menu that tells your story.',
     features: ['Custom Menu Curation', 'Wine & Spirit Pairing', 'Full Staffing Option', 'Tablescape Design']
