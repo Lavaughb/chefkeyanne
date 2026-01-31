@@ -222,7 +222,7 @@ const Home: React.FC = () => {
             <div>
               <h5 className="text-[10px] uppercase tracking-widest text-white/20 mb-8">Social</h5>
               <a 
-                href="https://www.instagram.com/chefkeyanne/" 
+                href="https://www.instagram.com/iriemancaribbeancuisine?igsh=MXN0MjY0Z3dieGFtcQ%3D%3D" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-[11px] uppercase tracking-widest text-white/60 hover:text-primary transition-colors block"

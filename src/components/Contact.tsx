@@ -84,7 +84,7 @@ export const Contact: React.FC = () => {
               <h3 className="text-xs uppercase tracking-[0.5em] text-white/30 mb-8">Social Connection</h3>
               <p className="text-white/60 mb-8 font-light italic">Follow the artistry and stay updated with recent plates.</p>
               <a 
-                href="https://www.instagram.com/chefkeyanne/" 
+                href="https://www.instagram.com/iriemancaribbeancuisine?igsh=MXN0MjY0Z3dieGFtcQ%3D%3D" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center justify-between group py-4 border-b border-white/10"
@@ -126,7 +126,7 @@ export const Contact: React.FC = () => {
             <div>
               <h5 className="text-[10px] uppercase tracking-widest text-white/20 mb-8">Social</h5>
               <a 
-                href="https://www.instagram.com/chefkeyanne/" 
+                href="https://www.instagram.com/iriemancaribbeancuisine?igsh=MXN0MjY0Z3dieGFtcQ%3D%3D" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="text-[11px] uppercase tracking-widest text-white/60 hover:text-primary transition-colors block"

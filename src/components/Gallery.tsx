@@ -81,7 +81,7 @@ export const Gallery: React.FC = () => {
                 </div>
              </div>
              <a 
-               href="https://www.instagram.com/chefkeyanne/" 
+               href="https://www.instagram.com/iriemancaribbeancuisine?igsh=MXN0MjY0Z3dieGFtcQ%3D%3D" 
                target="_blank" 
                rel="noopener noreferrer"
                className="px-6 py-3 border border-primary/30 text-primary text-[10px] uppercase tracking-[0.4em] hover:bg-primary hover:text-black transition-all"
@@ -161,7 +161,7 @@ export const Gallery: React.FC = () => {
             <div>
               <h5 className="text-[10px] uppercase tracking-widest text-white/20 mb-8">Social</h5>
               <a 
-                href="https://www.instagram.com/chefkeyanne/" 
+                href="https://www.instagram.com/iriemancaribbeancuisine?igsh=MXN0MjY0Z3dieGFtcQ%3D%3D" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-[11px] uppercase tracking-widest text-white/60 hover:text-primary transition-colors block"
