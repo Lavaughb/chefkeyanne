@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 /**
  * ASSET PIPELINE
+ * Dynamically imports all images from your assets folder.
  */
 const imageModules = import.meta.glob('../assets/images/*.{png,jpg,jpeg,webp}', { 
   eager: true, 
@@ -12,169 +13,189 @@ const imageModules = import.meta.glob('../assets/images/*.{png,jpg,jpeg,webp}', 
 // 1. Get all image paths
 const rawImages = Object.values(imageModules) as string[];
 
-// 2. EXCLUDE "Banner1" specifically, then use the rest for the gallery
-const allImages = rawImages.filter(path => !path.toLowerCase().includes('banner1'));
+// 2. EXCLUDE "Banner" images from the main gallery grid
+const allImages = rawImages.filter(path => !path.toLowerCase().includes('banner'));
 
-// 3. Take a few for the Instagram snapshot (now excluding Banner1)
-const instaSnapshots = allImages.slice(0, 4);
+// 3. SPECIFIC LOGO IMPORT
+const logoImg = rawImages.find(p => p.toLowerCase().includes('logo')) || "";
 
 export const Gallery: React.FC = () => {
   const navigate = useNavigate();
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const scrollToSection = (id: string) => {
+    // If we are on the gallery page and need to find "about", 
+    // we must navigate home first then scroll.
     navigate('/');
     setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
     }, 100);
+    setIsMenuOpen(false);
+  };
+
+  const handleNav = (path: string) => {
+    if (path === 'about') {
+      scrollToSection('about');
+    } else {
+      navigate(path === 'home' ? '/' : `/${path.toLowerCase()}`);
+    }
+    setIsMenuOpen(false);
   };
 
   return (
     <div className="min-h-screen bg-background-dark text-white selection:bg-primary selection:text-black">
       
-      {/* --- 1. SHARED NAV BAR --- */}
-      <header className="fixed top-0 left-0 z-50 w-full px-8 py-8 bg-background-dark/60 backdrop-blur-2xl border-b border-white/5">
+      {/* --- 1. SHARED NAV BAR (Logo Integration) --- */}
+      <header className="fixed top-0 left-0 z-[100] w-full px-6 py-4 md:px-12 md:py-6 bg-background-dark/90 backdrop-blur-2xl border-b border-white/5">
         <div className="max-w-[1400px] mx-auto flex items-center justify-between">
-          <Link to="/" className="cursor-pointer">
-            <h2 className="text-white text-3xl md:text-4xl font-bold tracking-[0.5em] uppercase font-display leading-none">
+          
+          {/* BRANDING GROUP */}
+          <div 
+            className="flex items-center gap-4 cursor-pointer group z-[110]" 
+            onClick={() => navigate('/')}
+          >
+            {/* THE CIRCULAR LOGO */}
+            <div className="relative w-10 h-10 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary transition-all duration-500 shadow-xl shadow-black/50">
+               <img 
+                src={logoImg} 
+                alt="Irieman Logo" 
+                className="w-full h-full object-cover scale-100 group-hover:scale-110 transition-transform duration-500"
+               />
+            </div>
+
+            <h2 className="text-white text-lg md:text-3xl font-bold tracking-[0.3em] md:tracking-[0.4em] uppercase font-display leading-none">
               IRIEMAN
             </h2>
-          </Link>
-          <nav className="hidden md:flex items-center gap-12">
-            <button onClick={() => navigate('/')} className="text-[11px] uppercase tracking-[0.4em] text-white/50 hover:text-primary transition-all">Home</button>
-            <button onClick={() => scrollToSection('about')} className="text-[11px] uppercase tracking-[0.4em] text-white/50 hover:text-primary transition-all">About</button>
-            <button onClick={() => navigate('/services')} className="text-[11px] uppercase tracking-[0.4em] text-white/50 hover:text-primary transition-all">Services</button>
-            <button onClick={() => navigate('/gallery')} className="text-[11px] uppercase tracking-[0.4em] text-primary transition-all font-bold">Gallery</button>
-            <button onClick={() => navigate('/contact')} className="text-[11px] uppercase tracking-[0.4em] text-white/50 hover:text-primary transition-all">Contact</button>
+          </div>
+
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-10">
+            {['Home', 'About', 'Services', 'Menu', 'Contact'].map((item) => (
+              <button 
+                key={item} 
+                onClick={() => handleNav(item.toLowerCase())}
+                className="text-[10px] uppercase tracking-[0.4em] text-white/50 hover:text-primary transition-all hover:-translate-y-0.5"
+              >
+                {item}
+              </button>
+            ))}
           </nav>
+
+          {/* Mobile Toggle */}
+          <button 
+            className="lg:hidden z-[110] p-2 text-primary active:scale-90 transition-transform" 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <span className="material-symbols-outlined text-3xl">
+              {isMenuOpen ? 'close' : 'menu'}
+            </span>
+          </button>
+
+          {/* Mobile Overlay */}
+          <div className={`fixed top-[73px] md:top-[96px] left-0 w-full h-[calc(100vh-73px)] bg-background-dark/98 backdrop-blur-3xl transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col items-center justify-center gap-10 z-[105] ${
+            isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10 pointer-events-none'
+          }`}>
+             <img src={logoImg} className="w-16 h-16 rounded-full border border-white/10 mb-4 opacity-50" alt="Branding" />
+             
+             {['Home', 'About', 'Services', 'Menu', 'Contact'].map((item, idx) => (
+              <button 
+                key={item} 
+                onClick={() => handleNav(item.toLowerCase())}
+                style={{ transitionDelay: `${idx * 50}ms` }}
+                className={`text-2xl uppercase tracking-[0.6em] text-white/80 hover:text-primary font-display transition-all ${
+                  isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                }`}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
         </div>
       </header>
 
-      {/* --- 2. INTRO --- */}
-      <section className="pt-52 pb-24 px-6 max-w-5xl mx-auto text-center">
-        <h1 className="text-5xl md:text-8xl font-display uppercase tracking-widest mb-12 leading-tight">
-          The Collection
-        </h1>
-        <div className="w-20 h-px bg-primary/40 mx-auto mb-12" />
-        <p className="text-white/60 text-lg md:text-xl leading-relaxed font-light tracking-wide max-w-3xl mx-auto animate-in fade-in duration-1000">
-          A curated exploration of <span className="text-white italic font-serif">authentic Caribbean cuisine</span>. 
-          Each dish presented in this collection represents our commitment to heritage and modern culinary precision.
-        </p>
-      </section>
-
-      {/* --- 3. INSTAGRAM SNAPSHOT --- */}
-      <section className="pb-32 px-6 max-w-6xl mx-auto">
-        <div className="group relative border border-white/10 bg-neutral-950/40 rounded-2xl overflow-hidden p-6 md:p-10 shadow-2xl">
-          <div className="flex flex-col md:flex-row items-center justify-between mb-10 gap-6">
-             <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full border-2 border-primary p-0.5">
-                   <div className="w-full h-full rounded-full bg-neutral-800 flex items-center justify-center overflow-hidden">
-                      <img src={instaSnapshots[0]} className="w-full h-full object-cover" alt="Chef profile" />
-                   </div>
-                </div>
-                <div>
-                   <h3 className="text-lg font-bold tracking-widest">CHEFKEYANNE</h3>
-                   <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                      <p className="text-[10px] text-white/40 uppercase tracking-widest">Live from the kitchen</p>
-                   </div>
-                </div>
-             </div>
-             <a 
-               href="https://www.instagram.com/iriemancaribbeancuisine?igsh=MXN0MjY0Z3dieGFtcQ%3D%3D" 
-               target="_blank" 
-               rel="noopener noreferrer"
-               className="px-6 py-3 border border-primary/30 text-primary text-[10px] uppercase tracking-[0.4em] hover:bg-primary hover:text-black transition-all"
-             >
-               Follow Journey
-             </a>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-             {instaSnapshots.map((img, i) => (
-               <div key={i} className="aspect-square bg-neutral-900 rounded-sm overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
-                  <img src={img} className="w-full h-full object-cover" alt="Instagram Post" />
-               </div>
-             ))}
-          </div>
+      {/* --- 2. GALLERY GRID --- */}
+      <main className="pt-32 md:pt-48 pb-24 px-6 max-w-7xl mx-auto">
+        <div className="mb-16 md:mb-24 text-center">
+          <h2 className="text-[10px] md:text-xs uppercase tracking-[0.6em] text-primary mb-4 md:mb-6">The Visuals</h2>
+          <h1 className="text-4xl md:text-7xl font-display uppercase tracking-widest leading-tight mb-6">The Gallery</h1>
+          <div className="w-24 h-px bg-primary mx-auto opacity-50" />
         </div>
-      </section>
 
-      {/* --- 4. THE PROJECT GALLERY MASONRY --- */}
-      <section className="pb-32 px-6 max-w-[1600px] mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[300px] md:auto-rows-[400px]">
-          {allImages.map((img, index) => {
-            const isLarge = index % 7 === 0;
-            const isTall = index % 5 === 0 && !isLarge;
-            return (
-              <div 
-                key={img} 
-                onClick={() => setSelectedImg(img)}
-                className={`group relative overflow-hidden bg-neutral-900 cursor-pointer border border-white/5 
-                  ${isLarge ? 'md:col-span-2 md:row-span-2' : ''} 
-                  ${isTall ? 'md:row-span-2' : ''}
-                `}
-              >
-                <img 
-                  src={img} 
-                  alt="Irieman Plate" 
-                  className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110" 
-                  loading="lazy" 
-                />
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-center">
-                  <span className="text-white text-[10px] uppercase tracking-[0.6em]">View Plate</span>
-                </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {allImages.map((img, i) => (
+            <div 
+              key={i} 
+              className="group relative aspect-square overflow-hidden rounded-xl bg-neutral-900 border border-white/5 cursor-pointer"
+              onClick={() => setSelectedImg(img)}
+            >
+              <img 
+                src={img} 
+                alt={`Irieman Dish ${i}`} 
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <span className="material-symbols-outlined text-white text-4xl font-light">add</span>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
-      </section>
+      </main>
 
-      {/* --- 5. MODAL LIGHTBOX --- */}
+      {/* --- 3. LIGHTBOX (Modal) --- */}
       {selectedImg && (
-        <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4" onClick={() => setSelectedImg(null)}>
-          <button className="absolute top-10 right-10 text-white/30 hover:text-primary transition-colors">
-            <span className="material-symbols-outlined text-5xl font-light">close</span>
+        <div 
+          className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-12 transition-all"
+          onClick={() => setSelectedImg(null)}
+        >
+          <button className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-[210]">
+            <span className="material-symbols-outlined text-4xl">close</span>
           </button>
-          <img src={selectedImg} className="max-w-full max-h-full object-contain animate-in zoom-in-95 duration-500" alt="Full Plate" />
+          
+          <img 
+            src={selectedImg} 
+            className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl" 
+            alt="Enlarged view" 
+          />
         </div>
       )}
 
-      {/* --- 6. SHARED FOOTER --- */}
-      <footer className="py-24 px-8 border-t border-white/5 bg-black">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-16">
+      {/* --- 4. FOOTER --- */}
+      <footer className="py-20 md:py-24 px-8 border-t border-white/5 bg-black">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12 md:gap-16">
           <div className="max-w-sm">
-            <h4 className="text-primary tracking-[0.4em] uppercase font-bold italic mb-6 text-3xl">IRIEMAN</h4>
-            <p className="text-white/40 text-sm leading-relaxed">Defining the future of luxury Caribbean dining. From intimate plates to grand-scale excellence.</p>
+            <h4 className="text-primary tracking-[0.4em] uppercase font-bold italic mb-6 text-2xl md:text-3xl">IRIEMAN</h4>
+            <p className="text-white/40 text-xs md:text-sm leading-relaxed">Defining the future of luxury Caribbean dining. From intimate plates to grand-scale excellence.</p>
           </div>
-          <div className="grid grid-cols-2 gap-20">
+          <div className="grid grid-cols-2 gap-12 md:gap-20">
             <div>
-              <h5 className="text-[10px] uppercase tracking-widest text-white/20 mb-8">Navigation</h5>
-              <ul className="space-y-4 text-[11px] uppercase tracking-widest text-white/60">
-                <li><Link to="/" className="hover:text-primary transition-colors">Home</Link></li>
-                <li><button onClick={() => scrollToSection('about')} className="hover:text-primary transition-colors text-left uppercase">About</button></li>
+              <h5 className="text-[9px] md:text-[10px] uppercase tracking-widest text-white/20 mb-6 md:mb-8">Navigation</h5>
+              <ul className="space-y-3 md:space-y-4 text-[10px] md:text-[11px] uppercase tracking-widest text-white/60">
+                <li><button onClick={() => navigate('/')} className="hover:text-primary transition-colors uppercase">Home</button></li>
+                <li><button onClick={() => scrollToSection('about')} className="hover:text-primary transition-colors uppercase">About</button></li>
                 <li><Link to="/services" className="hover:text-primary transition-colors">Services</Link></li>
                 <li><Link to="/gallery" className="hover:text-primary transition-colors">Gallery</Link></li>
+                <li><Link to="/menu" className="hover:text-primary transition-colors">Menu</Link></li>
                 <li><Link to="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
               </ul>
             </div>
             <div>
-              <h5 className="text-[10px] uppercase tracking-widest text-white/20 mb-8">Social</h5>
-              <a 
-                href="https://www.instagram.com/iriemancaribbeancuisine?igsh=MXN0MjY0Z3dieGFtcQ%3D%3D" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-[11px] uppercase tracking-widest text-white/60 hover:text-primary transition-colors block"
-              >
+              <h5 className="text-[9px] md:text-[10px] uppercase tracking-widest text-white/20 mb-6 md:mb-8">Social</h5>
+              <a href="https://www.instagram.com/iriemancaribbeancuisine" target="_blank" rel="noopener noreferrer" className="text-[10px] md:text-[11px] uppercase tracking-widest text-white/60 hover:text-primary transition-colors block">
                 Instagram
               </a>
             </div>
           </div>
         </div>
-        <div className="mt-28 text-center text-[10px] uppercase tracking-[0.5em] text-white/10">
+        <div className="mt-20 md:mt-28 text-center text-[9px] md:text-[10px] uppercase tracking-[0.5em] text-white/10">
           © 2026 Irieman Caribbean Cuisine | Authentic Excellence
         </div>
       </footer>
     </div>
   );
 };
+
+export default Gallery;

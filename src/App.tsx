@@ -4,6 +4,7 @@ import { Services } from './components/Services';
 import { Gallery } from './components/Gallery';
 import ScrollToTop from './components/ScrollToTop';
 import Contact from './components/Contact';
+import Menu from './components/Menu';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/services" element={<Services />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/menu" element={<Menu />} />
       </Routes>
     </Router>
   );
