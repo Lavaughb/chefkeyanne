@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 
 /**
  * ASSET PIPELINE
- * Dynamically imports all images from your assets folder.
  */
 const imageModules = import.meta.glob('../assets/images/*.{png,jpg,jpeg,webp}', { 
   eager: true, 
@@ -13,7 +12,7 @@ const allImages = Object.values(imageModules) as string[];
 
 const heroBanners = allImages.filter(p => p.toLowerCase().includes('banner')).sort().slice(0, 3);
 const marqueeImages = allImages.slice(0, 10); 
-const aboutPortrait = allImages.find(p => p.toLowerCase().includes('logo')) || allImages[0];
+const aboutPortrait = allImages.find(p => p.toLowerCase().includes('about')) || allImages[0];
 const logoImg = allImages.find(p => p.toLowerCase().includes('logo')) || "";
 
 const Home: React.FC = () => {
@@ -59,53 +58,22 @@ const Home: React.FC = () => {
       {/* --- 1. NAVIGATION --- */}
       <header className="fixed top-0 left-0 z-[100] w-full px-6 py-4 md:px-12 md:py-6 bg-background-dark/90 backdrop-blur-2xl border-b border-white/5">
         <div className="max-w-[1400px] mx-auto flex items-center justify-between">
-          
-          <div 
-            className="flex items-center gap-4 cursor-pointer group z-[110]" 
-            onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}
-          >
+          <div className="flex items-center gap-4 cursor-pointer group z-[110]" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
             <div className="relative w-10 h-10 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary transition-all duration-500 shadow-xl shadow-black/50">
-               <img 
-                src={logoImg} 
-                alt="Irieman Logo" 
-                className="w-full h-full object-cover scale-100 group-hover:scale-110 transition-transform duration-500"
-               />
+               <img src={logoImg} alt="Irieman Logo" className="w-full h-full object-cover scale-100 group-hover:scale-110 transition-transform duration-500"/>
             </div>
-            <h2 className="text-white text-lg md:text-3xl font-bold tracking-[0.3em] md:tracking-[0.4em] uppercase font-display leading-none">
-              IRIEMAN
-            </h2>
+            <h2 className="text-white text-lg md:text-3xl font-bold tracking-[0.3em] md:tracking-[0.4em] uppercase font-display leading-none">IRIEMAN</h2>
           </div>
 
           <nav className="hidden lg:flex items-center gap-10">
             {['About', 'Services', 'Gallery', 'Menu', 'Contact'].map((item) => (
-              <button 
-                key={item} 
-                onClick={() => handleNav(item)}
-                className="text-[10px] uppercase tracking-[0.4em] text-white/50 hover:text-primary transition-all hover:-translate-y-0.5"
-              >
-                {item}
-              </button>
+              <button key={item} onClick={() => handleNav(item)} className="text-[10px] uppercase tracking-[0.4em] text-white/50 hover:text-primary transition-all hover:-translate-y-0.5">{item}</button>
             ))}
           </nav>
 
           <button className="lg:hidden z-[110] p-2 text-primary" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             <span className="material-symbols-outlined text-3xl">{isMenuOpen ? 'close' : 'menu'}</span>
           </button>
-
-          <div className={`fixed top-[73px] md:top-[96px] left-0 w-full h-[calc(100vh-73px)] bg-background-dark/98 backdrop-blur-3xl transition-all duration-500 z-[105] flex flex-col items-center justify-center gap-10 ${
-            isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10 pointer-events-none'
-          }`}>
-             {['About', 'Services', 'Gallery', 'Menu', 'Contact'].map((item, idx) => (
-              <button 
-                key={item} 
-                onClick={() => handleNav(item)}
-                style={{ transitionDelay: `${idx * 50}ms` }}
-                className={`text-2xl uppercase tracking-[0.6em] text-white/80 hover:text-primary font-display transition-all ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
         </div>
       </header>
 
@@ -119,12 +87,21 @@ const Home: React.FC = () => {
             </div>
           ))}
         </div>
+
+        {/* Desktop Navigation Arrows (This uses the prevSlide function) */}
+        <div className="absolute inset-0 z-20 hidden md:flex items-center justify-between px-8 pointer-events-none">
+          <button onClick={prevSlide} className="pointer-events-auto p-4 rounded-full border border-white/10 bg-black/20 hover:bg-primary hover:text-black transition-all backdrop-blur-md">
+            <span className="material-symbols-outlined text-4xl">chevron_left</span>
+          </button>
+          <button onClick={nextSlide} className="pointer-events-auto p-4 rounded-full border border-white/10 bg-black/20 hover:bg-primary hover:text-black transition-all backdrop-blur-md">
+            <span className="material-symbols-outlined text-4xl">chevron_right</span>
+          </button>
+        </div>
+
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-5xl sm:text-7xl md:text-9xl lg:text-[11rem] font-thin tracking-[0.15em] uppercase font-display">IRIEMAN</h1>
           <p className="text-primary tracking-[0.8em] uppercase mt-10 text-xl font-light">Caribbean Cuisine</p>
-          <button onClick={() => navigate('/contact')} className="mt-20 px-16 py-6 bg-primary text-black text-[11px] tracking-[0.5em] uppercase font-extrabold hover:bg-white transition-all shadow-2xl active:scale-95">
-            Inquire Now
-          </button>
+          <button onClick={() => navigate('/contact')} className="mt-20 px-16 py-6 bg-primary text-black text-[11px] tracking-[0.5em] uppercase font-extrabold hover:bg-white transition-all shadow-2xl active:scale-95">Inquire Now</button>
         </div>
       </section>
 
@@ -166,36 +143,22 @@ const Home: React.FC = () => {
         </div>
       )}
 
-      {/* --- 6. ABOUT (UPDATED TO CIRCULAR) --- */}
+      {/* --- 6. ABOUT --- */}
       <section id="about" className="py-24 md:py-40 px-6">
         <div className="max-w-6xl mx-auto flex flex-col items-center">
-          
-          {/* LARGE CIRCULAR PORTRAIT */}
           <div className="relative group mb-20">
-            {/* Spinning decorative ring */}
             <div className="absolute -inset-6 border border-primary/20 rounded-full animate-[spin_25s_linear_infinite] pointer-events-none" />
             <div className="absolute -inset-3 border border-primary/40 rounded-full animate-[spin_15s_linear_infinite_reverse] pointer-events-none" />
-            
-            {/* Main Image Circle */}
             <div className="relative w-64 h-64 md:w-[500px] md:h-[500px] rounded-full overflow-hidden border-4 border-primary shadow-[0_0_60px_rgba(242,185,13,0.15)] bg-neutral-900">
-              <img 
-                src={aboutPortrait} 
-                className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-[3000ms]" 
-                alt="Chef Portrait" 
-              />
+              <img src={aboutPortrait} className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-[3000ms]" alt="Chef Portrait" />
             </div>
           </div>
 
-          {/* TEXT CONTENT */}
           <div className="text-center max-w-3xl">
             <h2 className="text-[10px] md:text-xs uppercase tracking-[0.8em] text-primary mb-8">The Vision</h2>
             <h3 className="text-4xl md:text-7xl font-display uppercase tracking-widest mb-10 leading-tight">Irieman Cuisine</h3>
-            <p className="text-white/60 leading-relaxed text-lg md:text-2xl font-light italic font-serif mb-12">
-              "You do the relaxing, we'll do the cooking."
-            </p>
-            <p className="text-white/40 leading-relaxed text-sm md:text-lg font-light mb-12">
-              As a company we aspire to bring a memorable event with a thoughtful curated menu pleasing to you and your guests.
-            </p>
+            <p className="text-white/60 leading-relaxed text-lg md:text-2xl font-light italic font-serif mb-12">"You do the relaxing, we'll do the cooking."</p>
+            <p className="text-white/40 leading-relaxed text-sm md:text-lg font-light mb-12">As a company we aspire to bring a memorable event with a thoughtful curated menu pleasing to you and your guests.</p>
             <div className="w-24 h-px bg-primary mx-auto" />
           </div>
         </div>
@@ -219,9 +182,6 @@ const Home: React.FC = () => {
               </ul>
             </div>
           </div>
-        </div>
-        <div className="mt-28 text-center text-[10px] uppercase tracking-[0.5em] text-white/10">
-          © 2026 Irieman Caribbean Cuisine | Authentic Excellence
         </div>
       </footer>
     </div>

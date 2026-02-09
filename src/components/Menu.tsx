@@ -16,8 +16,8 @@ const pdfModules = import.meta.glob('../assets/*.pdf', {
 });
 const pdfFiles = Object.values(pdfModules) as string[];
 
-// Asset Identification
-const brandingImg = allImages.find(p => p.toLowerCase().includes('logo')) || allImages[0];
+// Asset Identification - Updated to ensure the Hero uses the 'about' file
+const brandingImg = allImages.find(p => p.toLowerCase().includes('about')) || allImages[0];
 const logoImg = allImages.find(p => p.toLowerCase().includes('logo')) || "";
 const menuLink = pdfFiles.find(p => p.toLowerCase().includes('menu')) || pdfFiles[0];
 
@@ -39,10 +39,13 @@ const Menu: React.FC = () => {
   };
 
   const handleNav = (path: string) => {
-    if (path === 'about') {
+    const p = path.toLowerCase();
+    if (p === 'about') {
       scrollToSection('about');
+    } else if (p === 'home') {
+      navigate('/');
     } else {
-      navigate(path === 'home' ? '/' : `/${path.toLowerCase()}`);
+      navigate(`/${p}`);
     }
     setIsMenuOpen(false);
   };
@@ -62,33 +65,47 @@ const Menu: React.FC = () => {
 
           <nav className="hidden lg:flex items-center gap-10">
             {['Home', 'About', 'Services', 'Gallery', 'Contact'].map((item) => (
-              <button key={item} onClick={() => handleNav(item.toLowerCase())} className="text-[10px] uppercase tracking-[0.4em] text-white/50 hover:text-primary transition-all">{item}</button>
+              <button key={item} onClick={() => handleNav(item)} className="text-[10px] uppercase tracking-[0.4em] text-white/50 hover:text-primary transition-all">{item}</button>
             ))}
           </nav>
 
+          {/* Mobile Toggle */}
           <button className="lg:hidden z-[110] p-2 text-primary" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             <span className="material-symbols-outlined text-3xl">{isMenuOpen ? 'close' : 'menu'}</span>
           </button>
+
+          {/* Mobile Overlay */}
+          <div className={`fixed top-0 left-0 w-full h-screen bg-background-dark/98 backdrop-blur-3xl transition-all duration-500 z-[105] flex flex-col items-center justify-center gap-10 ${
+            isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10 pointer-events-none'
+          }`}>
+             {['Home', 'About', 'Services', 'Gallery', 'Contact'].map((item) => (
+              <button 
+                key={item} 
+                onClick={() => handleNav(item)}
+                className="text-2xl uppercase tracking-[0.6em] text-white/80 hover:text-primary font-display"
+              >
+                {item}
+              </button>
+            ))}
+          </div>
         </div>
       </header>
 
       {/* --- 2. LARGE CIRCULAR HERO SECTION --- */}
       <section className="pt-48 md:pt-60 pb-16 flex flex-col items-center">
         <div className="relative group">
-          {/* Decorative Ring */}
-          <div className="absolute -inset-4 border border-primary/20 rounded-full animate-[spin_20s_linear_infinite] pointer-events-none" />
+          <div className="absolute -inset-6 border border-primary/20 rounded-full animate-[spin_25s_linear_infinite] pointer-events-none" />
+          <div className="absolute -inset-3 border border-primary/40 rounded-full animate-[spin_15s_linear_infinite_reverse] pointer-events-none" />
           
-          {/* Circular Image Container */}
-          <div className="relative w-64 h-64 md:w-[450px] md:h-[450px] rounded-full overflow-hidden border-4 border-primary shadow-[0_0_50px_rgba(242,185,13,0.2)]">
+          <div className="relative w-64 h-64 md:w-[480px] md:h-[480px] rounded-full overflow-hidden border-4 border-primary shadow-[0_0_60px_rgba(242,185,13,0.2)] bg-neutral-900">
             <img 
               src={brandingImg} 
               alt="Irieman Culinary Heritage" 
-              className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-[2000ms]"
+              className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-[3000ms]"
             />
           </div>
 
-          {/* Floating Badge */}
-          <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-primary text-black px-8 py-2 rounded-full font-bold text-[10px] tracking-[0.3em] uppercase whitespace-nowrap shadow-xl">
+          <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-primary text-black px-10 py-3 rounded-full font-bold text-[10px] tracking-[0.4em] uppercase whitespace-nowrap shadow-2xl">
             Est. 2026
           </div>
         </div>
@@ -103,8 +120,8 @@ const Menu: React.FC = () => {
             </h1>
             
             <div className="w-full border border-white/5 bg-neutral-900/40 rounded-[2rem] md:rounded-[3rem] p-10 md:p-20 backdrop-blur-sm flex flex-col items-center shadow-2xl">
-              <p className="text-white/60 leading-relaxed text-lg md:text-xl mb-12 font-light max-w-2xl">
-                A curated journey through Caribbean heritage, blending traditional soul with modern refinement. Experience the vibrant flavors of the islands reimagined for the sophisticated palate.
+              <p className="text-white/60 leading-relaxed text-lg md:text-2xl italic font-serif mb-12 max-w-2xl">
+                "A curated journey through Caribbean heritage, blending traditional soul with modern refinement."
               </p>
 
               <a 
@@ -137,6 +154,7 @@ const Menu: React.FC = () => {
                 <li><Link to="/" className="hover:text-primary transition-colors">Home</Link></li>
                 <li><Link to="/services" className="hover:text-primary transition-colors">Services</Link></li>
                 <li><Link to="/gallery" className="hover:text-primary transition-colors">Gallery</Link></li>
+                <li><Link to="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
               </ul>
           </div>
         </div>
