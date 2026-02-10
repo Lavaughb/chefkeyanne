@@ -14,8 +14,13 @@ const imageModules = import.meta.glob('../assets/images/*.{png,jpg,jpeg,webp}', 
 const rawImages = Object.values(imageModules) as string[];
 
 // 2. EXCLUDE "Banner" images from the main gallery grid
-const allImages = rawImages.filter(path => !path.toLowerCase().includes('banner'));
+const excludedKeywords = ['banner', 'test', 'about', 'logo'];
 
+const allImages = rawImages.filter(path => {
+  const lowerPath = path.toLowerCase();
+  // Returns true only if NONE of the keywords are found
+  return !excludedKeywords.some(keyword => lowerPath.includes(keyword));
+});
 // 3. SPECIFIC LOGO IMPORT
 const logoImg = rawImages.find(p => p.toLowerCase().includes('logo')) || "";
 

@@ -17,7 +17,7 @@ const pdfModules = import.meta.glob('../assets/*.pdf', {
 const pdfFiles = Object.values(pdfModules) as string[];
 
 // Asset Identification - Updated to ensure the Hero uses the 'about' file
-const brandingImg = allImages.find(p => p.toLowerCase().includes('about')) || allImages[0];
+const brandingImg = allImages.find(p => p.toLowerCase().includes('test')) || allImages[0];
 const logoImg = allImages.find(p => p.toLowerCase().includes('logo')) || "";
 const menuLink = pdfFiles.find(p => p.toLowerCase().includes('menu')) || pdfFiles[0];
 
@@ -106,7 +106,7 @@ const Menu: React.FC = () => {
           </div>
 
           <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-primary text-black px-10 py-3 rounded-full font-bold text-[10px] tracking-[0.4em] uppercase whitespace-nowrap shadow-2xl">
-            Est. 2026
+            Est. 2013
           </div>
         </div>
       </section>
@@ -150,13 +150,22 @@ const Menu: React.FC = () => {
             <p className="text-white/40 text-xs md:text-sm leading-relaxed">Defining the future of luxury Caribbean dining.</p>
           </div>
           <div className="grid grid-cols-2 gap-12 md:gap-20">
+            
              <ul className="space-y-4 text-[10px] md:text-[11px] uppercase tracking-widest text-white/60">
+                           <h5 className="text-[9px] md:text-[10px] uppercase tracking-widest text-white/20 mb-6 md:mb-8">Navigation</h5>
+
                 <li><Link to="/" className="hover:text-primary transition-colors">Home</Link></li>
                 <li><Link to="/services" className="hover:text-primary transition-colors">Services</Link></li>
                 <li><Link to="/gallery" className="hover:text-primary transition-colors">Gallery</Link></li>
                 <li><Link to="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
               </ul>
           </div>
+           <div>
+              <h5 className="text-[9px] md:text-[10px] uppercase tracking-widest text-white/20 mb-6 md:mb-8">Social</h5>
+              <a href="https://www.instagram.com/iriemancaribbeancuisine" target="_blank" rel="noopener noreferrer" className="text-[10px] md:text-[11px] uppercase tracking-widest text-white/60 hover:text-primary transition-colors block">
+                Instagram
+              </a>
+            </div>
         </div>
       </footer>
     </div>

@@ -12,7 +12,7 @@ const allImages = Object.values(imageModules) as string[];
 
 const heroBanners = allImages.filter(p => p.toLowerCase().includes('banner')).sort().slice(0, 3);
 const marqueeImages = allImages.slice(0, 10); 
-const aboutPortrait = allImages.find(p => p.toLowerCase().includes('about')) || allImages[0];
+const aboutPortrait = allImages.find(p => p.toLowerCase().includes('test')) || allImages[0];
 const logoImg = allImages.find(p => p.toLowerCase().includes('logo')) || "";
 
 const Home: React.FC = () => {
@@ -177,9 +177,16 @@ const Home: React.FC = () => {
               <ul className="space-y-4 text-[11px] uppercase tracking-widest text-white/60">
                 <li><button onClick={() => window.scrollTo({top:0, behavior:'smooth'})} className="hover:text-primary transition-colors uppercase">Home</button></li>
                 <li><Link to="/services" className="hover:text-primary transition-colors">Services</Link></li>
+                <li><Link to="/gallery" className="hover:text-primary transition-colors">Gallery</Link></li>
                 <li><Link to="/menu" className="hover:text-primary transition-colors">Menu</Link></li>
                 <li><Link to="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
               </ul>
+            </div>
+            <div>
+              <h5 className="text-[9px] md:text-[10px] uppercase tracking-widest text-white/20 mb-6 md:mb-8">Social</h5>
+              <a href="https://www.instagram.com/iriemancaribbeancuisine" target="_blank" rel="noopener noreferrer" className="text-[10px] md:text-[11px] uppercase tracking-widest text-white/60 hover:text-primary transition-colors block">
+                Instagram
+              </a>
             </div>
           </div>
         </div>
