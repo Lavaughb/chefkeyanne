@@ -21,6 +21,15 @@ const Home: React.FC = () => {
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Prevent background scrolling when mobile menu is active
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [isMenuOpen]);
+
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % heroBanners.length);
   }, [heroBanners.length]);
@@ -71,14 +80,32 @@ const Home: React.FC = () => {
             ))}
           </nav>
 
+          {/* Mobile Toggle */}
           <button className="lg:hidden z-[110] p-2 text-primary" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             <span className="material-symbols-outlined text-3xl">{isMenuOpen ? 'close' : 'menu'}</span>
           </button>
+
+          {/* ADDED: Mobile Overlay (Missing in your previous version) */}
+          <div className={`fixed top-0 left-0 w-full h-screen bg-background-dark/98 backdrop-blur-3xl transition-all duration-500 z-[105] flex flex-col items-center justify-center gap-10 ${
+            isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10 pointer-events-none'
+          }`}>
+             {['About', 'Services', 'Gallery', 'Menu', 'Contact'].map((item, idx) => (
+              <button 
+                key={item} 
+                onClick={() => handleNav(item)}
+                style={{ transitionDelay: `${idx * 50}ms` }}
+                className={`text-2xl uppercase tracking-[0.6em] text-white/80 hover:text-primary font-display transition-all ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
         </div>
       </header>
 
-      {/* --- 2. HERO SECTION --- */}
+      {/* --- REST OF YOUR CODE (Hero, Expertise, etc.) --- */}
       <section className="relative h-screen min-h-[600px] w-full overflow-hidden bg-black">
+        {/* ... existing hero code ... */}
         <div className="absolute inset-0 z-0">
           {heroBanners.map((img, index) => (
             <div key={img} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentIndex ? 'opacity-100' : 'opacity-0'}`}>
@@ -88,16 +115,6 @@ const Home: React.FC = () => {
           ))}
         </div>
 
-        {/* Desktop Navigation Arrows (This uses the prevSlide function) */}
-        <div className="absolute inset-0 z-20 hidden md:flex items-center justify-between px-8 pointer-events-none">
-          <button onClick={prevSlide} className="pointer-events-auto p-4 rounded-full border border-white/10 bg-black/20 hover:bg-primary hover:text-black transition-all backdrop-blur-md">
-            <span className="material-symbols-outlined text-4xl">chevron_left</span>
-          </button>
-          <button onClick={nextSlide} className="pointer-events-auto p-4 rounded-full border border-white/10 bg-black/20 hover:bg-primary hover:text-black transition-all backdrop-blur-md">
-            <span className="material-symbols-outlined text-4xl">chevron_right</span>
-          </button>
-        </div>
-
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
           <h1 className="text-5xl sm:text-7xl md:text-9xl lg:text-[11rem] font-thin tracking-[0.15em] uppercase font-display">IRIEMAN</h1>
           <p className="text-primary tracking-[0.8em] uppercase mt-10 text-xl font-light">Caribbean Cuisine</p>
@@ -105,7 +122,6 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* --- 3. EXPERTISE --- */}
       <section id="services" className="py-24 md:py-32 px-6 max-w-7xl mx-auto">
         <div className="flex flex-col items-center mb-16 text-center">
           <h2 className="text-[10px] uppercase tracking-[0.6em] text-primary mb-4">The Mastery</h2>
@@ -125,7 +141,6 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* --- 4. MARQUEE --- */}
       <section className="py-12 overflow-hidden border-y border-white/5 bg-black/40">
         <div className="flex w-max animate-marquee gap-6 px-6">
           {[...marqueeImages, ...marqueeImages].map((img, i) => (
@@ -136,14 +151,12 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* --- 5. MODAL --- */}
       {selectedImg && (
         <div className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-md flex items-center justify-center p-4" onClick={() => setSelectedImg(null)}>
           <img src={selectedImg} className="max-w-full max-h-[80vh] object-contain rounded-lg" alt="Full View" />
         </div>
       )}
 
-      {/* --- 6. ABOUT --- */}
       <section id="about" className="py-24 md:py-40 px-6">
         <div className="max-w-6xl mx-auto flex flex-col items-center">
           <div className="relative group mb-20">
@@ -164,7 +177,6 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* --- 7. FOOTER --- */}
       <footer className="py-24 px-8 border-t border-white/5 bg-black">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-16">
           <div className="max-w-sm">

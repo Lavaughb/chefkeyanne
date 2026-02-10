@@ -56,6 +56,15 @@ export const Services: React.FC = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // PREVENT BODY SCROLL WHEN MENU IS OPEN (The Google Standard for Mobile UX)
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [isMenuOpen]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -100,6 +109,22 @@ export const Services: React.FC = () => {
           <button className="lg:hidden z-[110] p-2 text-primary" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             <span className="material-symbols-outlined text-3xl">{isMenuOpen ? 'close' : 'menu'}</span>
           </button>
+
+          {/* ADDED: MOBILE OVERLAY TRAY */}
+          <div className={`fixed top-0 left-0 w-full h-screen bg-background-dark/98 backdrop-blur-3xl transition-all duration-500 z-[105] flex flex-col items-center justify-center gap-10 ${
+            isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10 pointer-events-none'
+          }`}>
+             {['Home', 'About', 'Gallery', 'Menu', 'Contact'].map((item, idx) => (
+              <button 
+                key={item} 
+                onClick={() => handleNav(item.toLowerCase())}
+                style={{ transitionDelay: `${idx * 50}ms` }}
+                className={`text-2xl uppercase tracking-[0.6em] text-white/80 hover:text-primary font-display transition-all ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
         </div>
       </header>
 
@@ -109,14 +134,12 @@ export const Services: React.FC = () => {
         <div className="w-24 h-px bg-primary/40 mx-auto mb-16" />
       </section>
 
-      {/* --- 3. UPDATED HERO (Rounded & Outlined to match Home) --- */}
+      {/* --- 3. HERO --- */}
       <section className="px-6 mb-32 flex justify-center">
         <div className="relative group">
-          {/* Animated Outlines from Home.tsx */}
           <div className="absolute -inset-6 border border-primary/20 rounded-full animate-[spin_25s_linear_infinite] pointer-events-none" />
           <div className="absolute -inset-3 border border-primary/40 rounded-full animate-[spin_15s_linear_infinite_reverse] pointer-events-none" />
           
-          {/* Rounded Image Container */}
           <div className="relative w-72 h-72 md:w-[550px] md:h-[550px] rounded-full overflow-hidden border-4 border-primary shadow-[0_0_60px_rgba(242,185,13,0.15)] bg-neutral-900">
             <img 
               src={brandingImg} 
@@ -127,7 +150,7 @@ export const Services: React.FC = () => {
         </div>
       </section>
 
-      {/* --- 4. EXPANDED SERVICES LIST --- */}
+      {/* --- 4. SERVICES LIST --- */}
       <section className="pb-40 px-6">
         <div className="max-w-7xl mx-auto space-y-px bg-white/5 border border-white/5">
           {serviceList.map((service) => (
