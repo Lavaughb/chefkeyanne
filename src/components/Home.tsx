@@ -32,11 +32,12 @@ const Home: React.FC = () => {
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % heroBanners.length);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [heroBanners.length]);
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? heroBanners.length - 1 : prev - 1));
-  };
+  // const prevSlide = () => {
+  //   setCurrentIndex((prev) => (prev === 0 ? heroBanners.length - 1 : prev - 1));
+  // };
 
   useEffect(() => {
     const timer = setInterval(nextSlide, 8000);
