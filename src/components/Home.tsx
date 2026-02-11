@@ -131,7 +131,7 @@ const Home: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           <div className="md:col-span-8 bg-neutral-900 border border-white/5 p-16 flex flex-col justify-end transition-all hover:border-primary/40 min-h-[500px]">
             <span className="text-primary text-6xl font-display mb-8">01</span>
-            <h3 className="text-4xl font-display uppercase tracking-widest mb-6">By The Tray Dining</h3>
+            <h3 className="text-4xl font-display uppercase tracking-widest mb-6">Private Dining</h3>
             <p className="max-w-lg text-white/50 leading-relaxed text-lg">Intimate, multi-course gastronomic journeys crafted within your private sanctuary.</p>
           </div>
           <div className="md:col-span-4 bg-neutral-950 border border-white/5 p-12 flex flex-col justify-end transition-all hover:border-primary/40 min-h-[500px]">

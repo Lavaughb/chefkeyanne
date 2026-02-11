@@ -17,7 +17,7 @@ const logoImg = allImages.find(p => p.toLowerCase().includes('logo')) || "";
 const serviceList = [
   {
     id: '01',
-    title: 'By The Tray Dining',
+    title: 'Private Dining',
     subtitle: 'The Signature Experience',
     desc: 'Pickup for large tray orders. Our signature service for hosts who want to provide authentic Caribbean flavors in a shared, communal format. Perfect for gatherings that require soul and scale.',
     features: ['Large Tray Options', 'Perfect Pairings', 'Full course options', 'Ready to order options']
@@ -38,7 +38,7 @@ const serviceList = [
   },
   {
     id: '04',
-    title: 'By The Tray',
+    title: 'Large Orders',
     subtitle: 'Authenticity At Scale',
     desc: 'Large format ordering for gatherings that require authentic soul. Perfect for hosts who want to provide premium Caribbean flavors in a shared, communal format.',
     features: ['Half & Full Tray Sizes', 'Ready-to-Serve Packaging', 'Signature Irieman Sauces', 'Pickup or Delivery']
