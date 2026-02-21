@@ -170,7 +170,7 @@ const Home: React.FC = () => {
 
           <div className="text-center max-w-3xl">
             <h2 className="text-[10px] md:text-xs uppercase tracking-[0.8em] text-primary mb-8">The Vision</h2>
-            <h3 className="text-4xl md:text-7xl font-display uppercase tracking-widest mb-10 leading-tight">Irieman Cuisine</h3>
+            <h3 className="text-4xl md:text-7xl font-display uppercase tracking-widest mb-10 leading-tight">Irieman Caribbean Cuisine</h3>
             <p className="text-white/60 leading-relaxed text-lg md:text-2xl font-light italic font-serif mb-12">"You do the relaxing, we'll do the cooking."</p>
             <p className="text-white/40 leading-relaxed text-sm md:text-lg font-light mb-12">As a company we aspire to bring a memorable event with a thoughtful curated menu pleasing to you and your guests.</p>
             <div className="w-24 h-px bg-primary mx-auto" />
