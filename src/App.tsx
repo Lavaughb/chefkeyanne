@@ -8,9 +8,8 @@ import Menu from './components/Menu';
 
 function App() {
   return (
-    // 'basename' is critical for GitLab Pages deployment
-    <Router basename="/chefkeyanne">
-      <ScrollToTop /> 
+<Router>
+  <ScrollToTop /> 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/services" element={<Services />} />
