@@ -9,7 +9,7 @@ import Menu from './components/Menu';
 function App() {
   return (
     // 'basename' is critical for GitLab Pages deployment
-    <Router basename="/chefkeyanne">
+    <Router basename="/">
       <ScrollToTop /> 
       <Routes>
         <Route path="/" element={<Home />} />
