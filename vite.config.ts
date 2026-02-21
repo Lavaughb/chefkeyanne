@@ -13,8 +13,4 @@ export default defineConfig({
     })
   ],
   base: '/',
-<<<<<<< HEAD
 })
-=======
-})
->>>>>>> c3ae4107964c6100b0796c88bd3aafba3080ebe6
