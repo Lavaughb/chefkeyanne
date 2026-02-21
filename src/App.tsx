@@ -1,5 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './components/Home';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';import Home from './components/Home';
 import { Services } from './components/Services';
 import { Gallery } from './components/Gallery';
 import ScrollToTop from './components/ScrollToTop';
