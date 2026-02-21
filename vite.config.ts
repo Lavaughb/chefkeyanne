@@ -12,5 +12,5 @@ export default defineConfig({
       avif: { quality: 65 }, // AVIF is super efficient at lower quality scores
     })
   ],
-  base: '/chefkeyanne/',
+  base: '/',
 })
